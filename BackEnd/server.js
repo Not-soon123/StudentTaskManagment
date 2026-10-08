@@ -1,4 +1,6 @@
 const http = require('http');
+const fs = require('fs');
+const path = require('path');
 
 const Database = require('better-sqlite3');
 const db = new Database('tasks.db');
@@ -6,8 +8,31 @@ const db = new Database('tasks.db');
 
 const server = http.createServer((req, res) => {
 
-    // GET /tasks
-    if (req.method === 'GET' && req.url === '/tasks') {
+    if (req.method ==='GET' && req.url === '/') {
+        const filePath = path.join(__dirname, '../FrontEnd/index.html');
+
+        const html = fs.readFileSync(filePath, 'utf-8');
+
+        res.writeHead(200,{
+            'Content-type': 'text/html'
+        });
+
+        res.end(html)
+
+    }
+    else if (req.method === 'GET' && req.url === '/script.js') {
+        const filePath = path.join(__dirname, '../FrontEnd/script.js');
+
+        const js = fs.readFileSync(filePath, 'utf-8');
+
+        res.writeHead(200,{
+            'Content-type': 'application/javascript'
+        });
+
+        res.end(js)
+    }
+
+    else if (req.method === 'GET' && req.url === '/tasks') {
 
         const tasks = db.prepare('SELECT * FROM tasks').all();
 
