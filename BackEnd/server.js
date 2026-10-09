@@ -31,6 +31,17 @@ const server = http.createServer((req, res) => {
 
         res.end(js)
     }
+    else if (req.method === 'GET' && req.url === '/style.css') {
+        const filePath = path.join(__dirname, '../FrontEnd/style.css');
+
+        const css = fs.readFileSync(filePath, 'utf-8');
+
+        res.writeHead(200, {
+            'Content-type': 'text/css'
+        });
+
+        res.end(css);
+    }
 
     else if (req.method === 'GET' && req.url === '/tasks') {
 
